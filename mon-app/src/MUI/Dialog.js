@@ -4,8 +4,6 @@ import { Dialog } from "@material-ui/core";
 import axios from "axios";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 
 import samplePDF from "../sample.pdf";
 import AllPagesPDFViewer from "../components/pdf/all-pages";
@@ -22,12 +20,10 @@ var idii = 2;
 
 export default function AlertDialog(props) {
 
-  
-
   const [open, setOpen] = React.useState(false);
 
   const timer = setInterval(() => {
-    
+
     if (external > 25) {
       count1 = 4;
 
@@ -56,7 +52,7 @@ export default function AlertDialog(props) {
     if (count1 > max) {
       max = count1;
     }
-    //console.log(Math.round(external));
+    
     if (external == p) {
       count += 1;
     }
@@ -67,27 +63,26 @@ export default function AlertDialog(props) {
 
     }
     if (count == 1) {
-       
-      var d1 = Math.round((new Date().getTime())/1000);
-      const scrollAdd = {eventType: max.toString(), currentPoint: external.toString(), eventTimestamp: d1.toString(), entryId: window.location.href.toString(), referrer: "pdf", delay: d.toString() };
-      //console.log(d1);
+
+      var d1 = Math.round((new Date().getTime()) / 1000);
+      const scrollAdd = { eventType: max.toString(), currentPoint: external.toString(), eventTimestamp: d1.toString(), entryId: window.location.href.toString(), referrer: "pdf", delay: d.toString() };
       axios({
 
-      // method: "post",
+        // method: "post",
         url: "http://localhost:1337/activity-logs",
         data: scrollAdd
       });
       idii += 1;
       console.log("Post");
-      d =3;
+      d = 3;
     }
     if (count > 1) {
       d += 3;
-      
-    console.log( "put");
-  // axios.put('http://localhost:1337/activity-logs/'+idii.toString(), { delay: d.toString() })
 
-     
+      console.log("put");
+      // axios.put('http://localhost:1337/activity-logs/'+idii.toString(), { delay: d.toString() })
+
+
     }
     if (p != external) {
 
@@ -99,7 +94,7 @@ export default function AlertDialog(props) {
   useEffect(() => {
     return () => {
       clearInterval(timer);
-     
+
     }
   })
 
@@ -121,16 +116,19 @@ export default function AlertDialog(props) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        onScroll={(e) => { external = e.target.scrollTop}}
+        //pour avoir la position du scroll Top
+         onScroll={(e) => { external = e.target.scrollTop }}
+        //#######pour avoir le pourcentage de scroll
+        // onScroll={(e) => { external =((e.target.scrollTop +e.scrollHeight)*100)/ e.target.scrollHeight}}
 
       >
         <DialogContent>
           {props.children}
           <div className="parent">
-          <div className="child1">
-            <AllPagesPDFViewer className="all-page-container" pdf={samplePDF} />
+            <div className="child1">
+              <AllPagesPDFViewer className="all-page-container" pdf={samplePDF} />
             </div>
-          <GenerateDiv ></GenerateDiv>
+            <GenerateDiv ></GenerateDiv>
           </div>
         </DialogContent>
         <DialogActions>

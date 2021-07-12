@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useEffect ,useState } from 'react';
 import './Dialog.css';
 import height from './Dialog';
 import axios from "axios";
-function axiosTest() {
-    return axios.get('http://localhost:1337/activity-logs/').then(response => response.data.query.answer
 
-
-    )
-
-
+function axiosTest(x,ch) {
+    return new Promise ((resolve,reject) => {
+        axios.get('http://localhost:1337/activity-logs/')
+    .then(response => {
+        resolve(response.data[x][ch])
+    }).catch(err => {
+        reject(err.message)
+    })
+    })
 }
+
+
+
 
 export default function GenerateDiv(props) {
     const options = [];
     const colors = ['red', 'blue', 'yellow'];
+    const [activityLogs, setActivityLogs] = useState()
+    const [points, setPoints] = useState([])
+    console.log({points});
+    useEffect(async () => {
+        try {
+            const response = await axios.get('http://localhost:1337/activity-logs/');
+            setActivityLogs(response.data);
+            setPoints(response.data.map(item => item.currentPoint))
+        } catch (error) {
+            console.log({error});
+        }
+    }, [])
 
 
 
-    var marg = [];
+
+
+    console.log({activityLogs});
+    // var marg = [1000,100,2000];
     var delais = [];
     //     axios.get('http://localhost:1337/activity-logs/').then(response => {
     //   for(var j=0 ;j<response.data.length;j++){
@@ -28,32 +49,35 @@ export default function GenerateDiv(props) {
     // });
     // console.log(marg);
     // console.log(delais);
-    // console.log('******************',axiosTest(1));
-    //   for(var j=0 ;j<17;j++){
-    //     //   const pos = marg.push(response.data[j]['currentPoint']);
-    //       const delai = delais.push(axiosTest());
-    //   }
-    const promise = axiosTest().resolve(1);
+    // for(var j=0 ;j<17;j++){
+    // axiosTest(j,'delay').then(result =>{
+       
+    //         //   const pos = marg.push(response.data[j]['currentPoint']);
+    //           const delai = delais.push(result);
+             
+    // }).catch(error =>{
+    //     console.log("error:",error);
+    // })
+    // }
 
-    const onFulfilled = () => { };
-    const onRejected = () => { };
+    console.log('##########',axiosTest(1,'delay'));
 
-    // JavaScript will call `onFulfilled` if the promise is fulfilled,
-    // and `onRejected` if the promise is rejected.
-    promise.then(onFulfilled, onRejected);
-    console.log(promise);
-    console.log(delais);
+    // for (var i = 0; i < 17; i++) {
 
-    for (var i = 0; i < marg.length; i++) {
-
-        options.push(<div className="child1 child2" style={{ marginTop: marg[i], height: 200, background: 'red' }}></div>)
+    //     options.push(<div className="child1 child2" style={{ marginTop: marg[i], height: 200, background: 'red' }}></div>)
 
 
-    }
+    // }
+
     return (<div>
 
 
-        {options}
+        {points.map(item =>{
+            return (
+                <div className="child1 child2" style={{ marginTop: Number(item), height: 200, background: 'red' }}></div>
+
+            )
+        })}
 
     </div>)
 
