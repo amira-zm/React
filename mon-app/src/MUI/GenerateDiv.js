@@ -14,22 +14,43 @@ function axiosTest(x, ch) {
     })
 }
 
-function tri(delais, points, heights) {
+function tri(delais, points) {
     for (var i = delais.length - 1; i >= 0; i--) {
         //loop again through the array, moving backwards:
         for (var j = i; j >= 0; j--) {
             if (points[i] < points[j]) {
                 var temp1 = delais[i];
                 var temp = points[i];
-                var temp2 = heights[i];
+                //var temp2 = heights[i];
 
                 delais[i] = delais[j];
                 points[i] = points[j];
-                heights[i] = heights[j];
+                //heights[i] = heights[j];
 
                 delais[j] = temp1;
                 points[j] = temp;
-                heights[j] = temp2;
+                //heights[j] = temp2;
+
+            };
+        };
+    };
+}
+function tri1(delais) {
+    for (var i = delais.length - 1; i >= 0; i--) {
+        //loop again through the array, moving backwards:
+        for (var j = i; j >= 0; j--) {
+            if (delais[i] < delais[j]) {
+                var temp1 = delais[i];
+                //var temp = points[i];
+                //var temp2 = heights[i];
+
+                delais[i] = delais[j];
+                //points[i] = points[j];
+                //heights[i] = heights[j];
+
+                delais[j] = temp1;
+                //points[j] = temp;
+                //heights[j] = temp2;
 
             };
         };
@@ -38,16 +59,16 @@ function tri(delais, points, heights) {
 
 
 export default function GenerateDiv(props) {
+    var c =0;
     const options = [];
     const colors = ['red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue', 'red', 'blue'];
-
     const [points, setPoints] = useState([])
     const [delais, setDelais] = useState([])
     var heights = [];
     for (var j = 0; j < points.length; j++) {
         const h = heights.push(200);
     }
-    tri(delais, points, heights);
+
 
     useEffect(async () => {
         try {
@@ -55,63 +76,100 @@ export default function GenerateDiv(props) {
 
             setPoints(response.data.map(item => Number(item.currentPoint)));
             setDelais(response.data.map(item => Number(item['delay'])));
-            
-            var i = 0;
-            const l = points.lenght;
-            while (i < l) {
-                if (points[i + 1] < (points[i]+ 200)) {
-
-                    points.splice(i + 2, 0, (points[i + 1]) + 200);
-                    console.log('###');
-
-                    const d = delais.push(delais[i + 1]);
-                    delais.splice(i + 1, 1, delais[i] + delais[i + 1]);
-                    heights.splice(i, 1, points[i + 1] - points[i]);
-                    heights.splice(i, 1, (points[i] + 200) - points[i + 1]);
-                    const h = heights.push((points[i + 1] + 200) - (points[i] + 200));
-                    tri(delais, points, heights);
-                    l += 1;
-                    console.log(l);
-                    
-
-                }
-
-                i += 1;
-            }
 
         } catch (error) {
             console.log({ error });
         }
     }, [])
 
+    var l = points.length;
+    var k = 0;
+    var pos = [];
+    var heigh = [];
+    var del = [];
+    var k1 = 0;
+
+   
+    tri(delais, points)
+    console.log({ delais });
+    
+    do {
+
+        c=0
+        var x = true;
+        k1 = k;
+        // var somme = 0;
+        
+        // for (var x = 0; x <  (2 * compteur) - 1; x++) {
+        //     const s = del.push(0);
+        // }
+        // console.log('vb', del)
+        // for (var m = 0, t =   (2 * compteur) - 1; m <  ((2 * compteur) - 1) / 2, t >  ((2 * compteur) - 1) / 2; m++, t--) {
+        //     somme += delais[m];
+        //     console.log('indices', m, t - 1)
+        //     if ((t - 1) != m) {
+
+        //         del.splice(m, 1, somme);
+        //         console.log('yes')
+        //         del.splice(t - 1, 1, somme);
+
+        //     }
+        //     else {
+        //         del.splice(m, 1, somme);
+        //     }
+
+        // }
+
+
+
+
+
+        do {
+
+            console.log({ c });
+            if (points[k1] < (points[k] + 200)) {
+                
+                
+                var pos1 = pos.push(points[k1]);
+                pos1 = pos.push(points[k1] + 200)
+                tri1(pos);
+                k1++;
+                
+            }
+            else {
+                x = false;
+                                
+
+            }
+            k += 1;
+        } while (x == true);
+        
+        
+    } while (k <= l);
+    
     console.log({ points });
+    console.log({ pos });
 
-    // tri(delais,points);
+    for (var y = 1; y < pos.length; y++) {
+        //console.log(y);
+        var h1 = heigh.push(pos[y] - pos[y - 1]);
 
+    }
 
-    // // var heights = [];
-    // // var positions=[];
-    // // var delays=[];
-    // // for (var i = 0; i < points.length-1; i++) {
-
-    // //     if (Number(points[i+1])<Number(points[i])+200){
-    // //         const p =positions.push(points[i]);
-    // //         const d=delays.push(Number(delais[i]));
-    // //         const h=heights.push(Number(points[i+1])-Number(points[i]));
-    // //         const p1 =positions.push(points[i+1]);
-    // //         const d1=delays.push(Number(delais[i])+Number(delais[i+1]));
-    // //         const h1=heights.push(200-(Number(points[i+1])-Number(points[i])));
+    console.log({ del });
 
 
-    // //     }
-    // //     else{
-    // //         const p =positions.push(points[i]);
-    // //         const d=delays.push(Number(delais[i]));
-    // //         const h=heights.push(200);
-
-    // //     }
-    // // }
-    // var i=0;
+var compt=0;
+let com=0;
+do{if(pos[compt]==points[compt]){
+    com+=1;
+}
+else{
+    console.log('+++++++++++++++++++',com);
+    
+}
+compt++;
+}while(compt<34)
 
 
 
@@ -119,26 +177,9 @@ export default function GenerateDiv(props) {
 
 
 
+    for (var i = 0; i < pos.length; i++) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    for (var i = 0; i < points.length; i++) {
-
-        options.push(<div className="child1 child2" style={{ marginTop: Number(points[i]), height: heights[i], background: colors[i] }}></div>)
+        options.push(<div className="child1 child2" style={{ marginTop: Number(pos[i]), height: heigh[i], background: colors[i] }}></div>)
 
 
     }
