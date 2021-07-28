@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Document, Page } from "react-pdf";
+import { useWindowWidth } from '@wojtekmaj/react-hooks'
 
 export default function AllPages(props) {
   const [numPagesState, setNumPages] = useState(null);
@@ -10,7 +11,7 @@ export default function AllPages(props) {
   }
 
   const { pdf } = props;
-
+  const width = useWindowWidth()
   return (
     <Document
       file={pdf}
@@ -20,7 +21,11 @@ export default function AllPages(props) {
 
     >
       {Array.from(new Array(numPagesState), (el, index) => (
-        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+        <Page 
+          key={`page_${index + 1}`} 
+          pageNumber={index + 1} 
+           width={width * 0.9}  
+        />
       ))}
     </Document>
   );

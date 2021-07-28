@@ -1,11 +1,12 @@
 import React from "react";
 import "./styles.css";
-import Dialog from "./MUI/Dialog";
+
+import FullScreenDialog from "./MUI/FullScreenDialog";
 
 export default function App() {
   return (
     <div>
-      <Dialog />
+      <FullScreenDialog />
     </div>
   );
 }
